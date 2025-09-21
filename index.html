@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Deblox - R6 Strateur</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Éditeur d'image</a>
+            <div class="d-flex align-items-center">
+                <!-- Icon Upload -->
+                <li class="nav-item ms-2">
+                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#uploadIconModal">
+                        Upload Icon
+                    </button>
+                </li>
+                <!-- Séparateur -->
+                <button class="btn btn-dark me-2">
+                    |
+                </button>
+                <!-- Bouton avec recherche -->
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="faEditorIconSearchDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">🔍 Icons</a>
+                        <div class="dropdown-menu p-2" aria-labelledby="faEditorIconSearchDropdown"
+                            style="width: 250px;">
+                            <input type="text" id="faEditorIconSearchInput" class="form-control mb-2"
+                                placeholder="Rechercher une icône...">
+                            <div id="faEditorIconResults" style="max-height: 300px; overflow-y: auto;"></div>
+                        </div>
+                    </li>
+                    <input type="color" id="faEditorIconColor" value="#ff0000"
+                        class="form-control form-control-color me-2" title="Choisir une couleur d'icône">
+                </ul>
+
+                <!-- Séparateur -->
+                <button class="btn btn-dark me-2">
+                    |
+                </button>
+                <!-- Maps -->
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="mapMenuBtn"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Maps
+                    </button>
+                    <ul class="dropdown-menu" id="mapMenu"></ul>
+                </div>
+
+                <!-- Séparateur -->
+                <button class="btn btn-dark me-2">
+                    |
+                </button>
+
+                <!-- Bouton Tools -->
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="toolsDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="true">
+                            Tools
+                        </a>
+                        <div class="dropdown-menu p-2" aria-labelledby="toolsDropdown" id="toolsMenu"
+                            style="width: 300px;">
+                        </div>
+                    </li>
+                </ul>
+                <!-- Séparateur -->
+                <button class="btn btn-dark me-2">
+                    |
+                </button>
+
+                <!-- Attaquant -->
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="attaqueDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="true">
+                            Attaquant
+                        </a>
+                        <div class="dropdown-menu p-2" aria-labelledby="attaqueDropdown" id="attaqueMenu"
+                            style="width: 400px;">
+                        </div>
+                    </li>
+                </ul>
+
+                <!-- Séparateur -->
+                <button class="btn btn-dark me-2">
+                    |
+                </button>
+
+                <!-- Défenseur -->
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="defenseurDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="true">
+                            Défenseur
+                        </a>
+                        <div class="dropdown-menu p-2" aria-labelledby="defenseurDropdown" id="defenseurMenu"
+                            style="width: 400px;">
+                        </div>
+                    </li>
+                </ul>
+
+                <!-- Séparateur -->
+                <button class="btn btn-dark me-2">
+                    |
+                </button>
+
+                <!-- Flèche -->
+                <button class="btn btn-dark me-2" id="arrowModeBtn">
+                    Tracer flèche
+                </button>
+                <input type="color" id="arrowColor" value="#ff0000" class="form-control form-control-color me-2"
+                    title="Choisir couleur flèche">
+
+                <!-- Séparateur -->
+                <button class="btn btn-dark me-2">
+                    |
+                </button>
+
+                <!-- Texte -->
+                <button class="btn btn-dark me-2" id="addTextBtn">Ajouter Texte</button>
+                <input type="color" id="textColor" value="#000000" class="form-control form-control-color me-2"
+                    title="Choisir couleur texte">
+
+                <!-- 🗑 -->
+                <button class="btn btn-danger ms-2" id="deleteBtn" style="display:none;">🗑</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Zone éditeur -->
+    <div id="editor">
+        <svg id="arrowLayer">
+            <defs>
+                <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0,10 3.5,0 7" fill="context-stroke" />
+                </marker>
+            </defs>
+        </svg>
+    </div>
+
+    <!-- Modal Bootstrap pour upload -->
+    <div class="modal fade" id="uploadIconModal" tabindex="-1" aria-labelledby="uploadIconModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="uploadIconModalLabel">Ajouter une icône</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="file" id="uploadIconInputModal" accept="image/*" class="form-control">
+                    <small class="text-muted">Choisissez une image pour l’ajouter à l’éditeur</small>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery et jQuery UI et Bootsraps -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Script -->
+    <script src="js/iconsFont.js"></script>
+    <script src="js/upload.js"></script>
+    <script src="js/maps.js"></script>
+    <script src="js/tool.js"></script>
+    <script src="js/icons.js"></script>
+    <script src="js/text.js"></script>
+    <script src="js/arrow.js"></script>
+    <script src="js/atk.js"></script>
+    <script src="js/def.js"></script>
+</body>
+
+</html>

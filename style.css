@@ -1,0 +1,210 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+
+#editor {
+    position: relative;
+    width: 100%;
+    height: calc(100vh - 56px);
+    background: #f0f0f0;
+    overflow: hidden;
+}
+
+#editor img.background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+/* Icônes */
+.icon-wrapper {
+    position: absolute;
+    cursor: move;
+    box-sizing: border-box;
+    border: 2px solid transparent;
+    transition: border 0.2s, box-shadow 0.2s;
+}
+
+.icon-wrapper img {
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    display: block;
+}
+
+.icon-selected {
+    border: 2px dashed #007bff;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+}
+
+/* handles jQuery UI */
+.ui-resizable-handle {
+    background: #007bff;
+    border: 1px solid #fff;
+    width: 8px;
+    height: 8px;
+    z-index: 1000;
+}
+
+/* handles visibles seulement quand sélectionné */
+.icon-wrapper .ui-resizable-handle {
+    display: none;
+}
+
+.icon-wrapper.icon-selected .ui-resizable-handle {
+    display: block;
+}
+
+.ui-resizable-n,
+.ui-resizable-e,
+.ui-resizable-s,
+.ui-resizable-w,
+.ui-resizable-ne,
+.ui-resizable-se,
+.ui-resizable-sw,
+.ui-resizable-nw {
+    position: absolute;
+}
+
+/* Flèches */
+.arrow-selected {
+    stroke-width: 5 !important;
+}
+
+#arrowLayer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: all;
+}
+
+#arrowLayer line {
+    cursor: pointer;
+}
+
+/* Menus attaque et défense */
+#attaqueMenu,
+#defenseurMenu {
+    display: none;
+}
+
+#attaqueMenu.show,
+#defenseurMenu.show {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+#attaqueMenu a,
+#defenseurMenu a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: calc(100% / 7 - 5px);
+    text-align: center;
+    padding: 2px;
+    font-size: 0.7rem;
+}
+
+#attaqueMenu img,
+#defenseurMenu img {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 2px;
+}
+
+/* Menu Maps */
+
+/* Position du sous-menu */
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu>.dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -1px;
+    display: none;
+    /* caché par défaut */
+}
+
+/* Afficher le sous-menu quand on survole le parent */
+.dropdown-submenu:hover>.dropdown-menu {
+    display: block;
+}
+
+/* Gestion Texte */
+.text-wrapper {
+    display: inline-block;
+    min-width: 50px;
+    min-height: 20px;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    user-select: text;
+}
+
+.text-wrapper:focus {
+    outline: none;
+}
+
+#toolsMenu {
+    display: none;
+}
+
+#toolsMenu.show {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+#toolsMenu a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: calc(100% / 5 - 5px);
+    /* 5 colonnes */
+    text-align: center;
+    padding: 4px;
+    font-size: 0.7rem;
+}
+
+#toolsMenu img {
+    width: 30px;
+    height: 30px;
+    margin-bottom: 2px;
+}
+
+.icon-wrapper .fa {
+    display: inline-block;
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+}
+
+/* Masquer les petits carrés bleus de redimensionnement */
+.upload-icon-wrapper .ui-resizable-handle {
+    display: none !important;
+}
+
+/* Optionnel : montrer uniquement quand l'icône est sélectionnée */
+.upload-icon-wrapper.upload-icon-selected .ui-resizable-handle {
+    display: block !important;
+    background: rgba(0, 123, 255, 0.8); /* couleur des handles */
+    border-radius: 2px;
+    width: 8px;
+    height: 8px;
+}
